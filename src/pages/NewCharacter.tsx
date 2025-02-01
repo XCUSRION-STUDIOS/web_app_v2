@@ -184,7 +184,7 @@ export default function NewCharacter() {
 
       {/* Character Info Section */}
       <div className="mt-5 text-center">
-        <h1 className="text-xl font-light tracking-wide">CHARACTER INFO:</h1>
+        <h1 className="text-xl font-light tracking-wide font-[Metropolis]">CHARACTER INFO:</h1>
       </div>
 
       {/* Input Fields */}

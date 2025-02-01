@@ -49,7 +49,7 @@ export default function HomePage() {
 
       {/* Title Section */}
       <div
-        className="absolute flex flex-col items-center text-center text-white"
+        className="absolute flex flex-col items-center text-center text-white font-[Metropolis]"
         style={{ top: '35%' }}
       >
         <div className="border-t border-white w-64 opacity-50"></div>
