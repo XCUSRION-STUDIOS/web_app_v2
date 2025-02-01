@@ -147,8 +147,9 @@ export default function CharacterDashboard() {
   
         <div className="w-full mt-auto p-1 text-[#767676] text-sm">
         <div className="flex justify-center space-x-2">
-        <Link to="/character-dashboard">
-          <button className="text-[#767676] p-1 rounded-md hover:bg-gray-700">
+
+          <Link to="/character-dashboard">
+          <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">
             Status
           </button>
           </Link>
