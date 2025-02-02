@@ -68,7 +68,7 @@ button {
   padding: 0.2em 0.2em;
   /* font-size: 1.15em; */
   font-weight: 500;
-  font-family: "Metropolis", sans-serif;
+  /* font-family: "Metropolis", sans-serif; */
   /* color: white; */
   cursor: pointer;
   transition: border-color 0.25s;
