@@ -145,50 +145,50 @@
        
 
   
-//         <div className="w-full mt-auto p-1 text-[#767676] text-sm">
-//         <div className="flex justify-center space-x-2">
+      //   <div className="w-full mt-auto p-1 text-[#767676] text-sm">
+      //   <div className="flex justify-center space-x-2">
 
-//           <Link to="/character-dashboard">
-//           <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">
-//             Status
-//           </button>
-//           </Link>
+      //     <Link to="/character-dashboard">
+      //     <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">
+      //       Status
+      //     </button>
+      //     </Link>
 
-//           <Link to="/daily-quests">
-//           <button className="p-2 rounded-md hover:bg-gray-700">
-//             Daily Quests
-//           </button>
-//           </Link>
+      //     <Link to="/daily-quests">
+      //     <button className="p-2 rounded-md hover:bg-gray-700">
+      //       Daily Quests
+      //     </button>
+      //     </Link>
           
-//           <Link to="/quests">
-//           <button  className="p-2 rounded-md hover:bg-gray-700">
-//             Quests
-//           </button>
-//           </Link>
+      //     <Link to="/quests">
+      //     <button  className="p-2 rounded-md hover:bg-gray-700">
+      //       Quests
+      //     </button>
+      //     </Link>
 
-//           <Link to="/skills">
-//           <button className="p-2 rounded-md hover:bg-gray-700">
-//             Skills
-//           </button>
-//           </Link>
+      //     <Link to="/skills">
+      //     <button className="p-2 rounded-md hover:bg-gray-700">
+      //       Skills
+      //     </button>
+      //     </Link>
 
-//           <Link to="/history">
-//           <button className="p-2 rounded-md  hover:bg-gray-700">
-//             History
-//           </button>
-//           </Link>
+      //     <Link to="/history">
+      //     <button className="p-2 rounded-md  hover:bg-gray-700">
+      //       History
+      //     </button>
+      //     </Link>
 
-//           <Link to="/">
-//           <button className="p-2 rounded-md text-red-500">
-//             Exit
-//           </button>
-//           </Link>
+      //     <Link to="/">
+      //     <button className="p-2 rounded-md text-red-500">
+      //       Exit
+      //     </button>
+      //     </Link>
 
-//           </div>
-//         </div>
+      //     </div>
+      //   </div>
 
 
-//       </div>
+      // </div>
 
 
 //       {/* Right Panel */}
@@ -224,10 +224,9 @@
 //   );
 // }
 
-
 import { Radar } from "react-chartjs-2";
 import "chart.js/auto";
-
+import { Link } from 'react-router-dom';
 
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
@@ -392,6 +391,54 @@ export default function CharacterDashboard() {
           </Card>
           <Progress value={50} max={20} className="mt-2 h-[10px]"/>
         </div>
+
+        <div className="w-full mt-auto p-1 text-[#767676] text-sm">
+        <div className="flex justify-center space-x-2">
+
+          <Link to="/character-dashboard">
+          <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">
+            Status
+          </button>
+          </Link>
+
+          <Link to="/daily-quests">
+          <button className="p-2 rounded-md hover:bg-gray-700">
+            Daily Quests
+          </button>
+          </Link>
+          
+          <Link to="/quests">
+          <button  className="p-2 rounded-md hover:bg-gray-700">
+            Quests
+          </button>
+          </Link>
+
+          <Link to="/skills">
+          <button className="p-2 rounded-md hover:bg-gray-700">
+            Skills
+          </button>
+          </Link>
+
+          <Link to="/history">
+          <button className="p-2 rounded-md  hover:bg-gray-700">
+            History
+          </button>
+          </Link>
+
+          <Link to="/">
+          <button className="p-2 rounded-md text-red-500">
+            Exit
+          </button>
+          </Link>
+
+          </div>
+        </div>
+
+
+      
+
+        
+        
       </div>
 
       {/* Right Panel */}
