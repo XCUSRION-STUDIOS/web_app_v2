@@ -227,7 +227,7 @@
 
 import { Radar } from "react-chartjs-2";
 import "chart.js/auto";
-import { Link } from 'react-router-dom';
+
 
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
