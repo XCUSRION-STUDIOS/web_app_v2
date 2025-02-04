@@ -1,0 +1,15 @@
+https://tailwindcss.com/docs/installation/using-vite
+
+
+  // "scripts": {
+  //   "dev": "vite",
+  //   "build": "tsc -b && vite build",
+  //   "lint": "eslint .",
+  //   "preview": "vite preview"
+  // },
+
+
+git checkout main
+git pull origin main
+git merge [branch_name]
+git push origin main

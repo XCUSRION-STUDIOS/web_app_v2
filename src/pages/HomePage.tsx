@@ -4,7 +4,8 @@ import backgroundImage from '../assets/darkimg2.png';
 import Logo from '../assets/xcursionlogo.png';
 
 const handleClearData = () => {
-  localStorage.removeItem("characters");
+  // localStorage.removeItem("characters");
+  localStorage.clear();
   alert("Character data has been cleared.");
   window.location.reload(); // Refresh to update state
 };
