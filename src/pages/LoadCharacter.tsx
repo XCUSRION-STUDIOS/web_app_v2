@@ -15,12 +15,8 @@ interface Character {
   mental: string;
   social: string;
   emotional: string;
+  createdAt: number;
 }
-
-// const handleClearData = () => {
-//   localStorage.removeItem("characters");
-//   alert("Character data has been cleared.");
-// };
 
 export default function LoadCharacter() {
   const [storedCharacters, setStoredCharacters] = useState<Character[]>([]);
@@ -72,8 +68,9 @@ export default function LoadCharacter() {
               <h2 className="text-xl font-light tracking-wide font-[Metropolis]">{char.username || "Unknown"}</h2>
               <p className="text-2xl font-bold">Level: 1</p>
               <p className="text-[0.75em]">Class: N/A</p>
-              <p className="text-[0.75em]">Title: {char.occupation || "Unknown"}</p>
+              <p className="text-[0.75em]">Title: N/A</p>
               <p className="text-[0.75em]">Age: {char.age || "Unknown"}</p>
+              <p className="text-[0.75em]">Character Creation:  {new Date(char.createdAt).toLocaleString() || "Unknown"}</p>
             </div>
 
             <div className="flex flex-col space-y-1.5 w-48">
