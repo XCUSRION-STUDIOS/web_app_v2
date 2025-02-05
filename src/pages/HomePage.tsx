@@ -3,30 +3,30 @@ import { Link } from 'react-router-dom';
 import backgroundImage from '../assets/darkimg2.png';
 import Logo from '../assets/xcursionlogo.png';
 
-const handleClearData = () => {
-  // localStorage.removeItem("characters");
-  localStorage.clear();
-  alert("Character data has been cleared.");
-  window.location.reload(); // Refresh to update state
-};
+// const handleClearData = () => {
+//   // localStorage.removeItem("characters");
+//   localStorage.clear();
+//   alert("Character data has been cleared.");
+//   window.location.reload(); // Refresh to update state
+// };
 
-const handleExportData = () => {
-  const storedCharacters = localStorage.getItem("characters");
-  if (!storedCharacters) {
-    alert("No character data available to export.");
-    return;
-  }
+// const handleExportData = () => {
+//   const storedCharacters = localStorage.getItem("characters");
+//   if (!storedCharacters) {
+//     alert("No character data available to export.");
+//     return;
+//   }
 
-  const blob = new Blob([storedCharacters], { type: "application/json" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-  a.href = url;
-  a.download = "characters.json";
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-};
+//   const blob = new Blob([storedCharacters], { type: "application/json" });
+//   const url = URL.createObjectURL(blob);
+//   const a = document.createElement("a");
+//   a.href = url;
+//   a.download = "characters.json";
+//   document.body.appendChild(a);
+//   a.click();
+//   document.body.removeChild(a);
+//   URL.revokeObjectURL(url);
+// };
 
 export default function HomePage() {
   const [hasCharacters, setHasCharacters] = useState(false);
@@ -87,7 +87,7 @@ export default function HomePage() {
       </div>
 
       {/* Utility Buttons */}
-      <div className="mt-5 flex flex-col items-center gap-2">
+      {/* <div className="mt-5 flex flex-col items-center gap-2">
         <button
           onClick={handleExportData}
           className={`w-45 px-6 py-2 text-base rounded-full transition ${
@@ -106,7 +106,7 @@ export default function HomePage() {
         >
           Clear Data
         </button>
-      </div>
+      </div> */}
 
       {/* Footer Section */}
       <div className="absolute bottom-4 text-white opacity-70 text-sm">
