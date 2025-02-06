@@ -13,3 +13,5 @@ git checkout main
 git pull origin main
 git merge [branch_name]
 git push origin main
+
+https://stackoverflow.com/questions/58065603/netlify-renders-404-on-page-refresh-using-react-and-react-router
