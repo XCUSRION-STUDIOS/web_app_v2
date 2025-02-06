@@ -1,10 +1,10 @@
+
 import { Radar } from "react-chartjs-2";
 import "chart.js/auto";
 import { Link, useNavigate } from 'react-router-dom';
 
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
-import { Checkbox } from "@/components/ui/checkbox";
 import CharacterImage from '../assets/characterimage.png';
 import OtherImage from '../assets/otherimage.png';
 import { useState, useEffect } from "react";
@@ -27,7 +27,25 @@ interface Character {
 export default function CharacterDashboard() {
   const navigate = useNavigate();
   const [storedCharacters, setStoredCharacters] = useState<Character[]>([]);
+  const [dailyQuests, setDailyQuests] = useState<{ id: number; name: string; completed: boolean }[]>([]);
 
+  const [themeColor, setThemeColor] = useState<string[]>(["#398FFF"]);
+
+  useEffect(() => {
+    const savedColor = localStorage.getItem("selectedColors");
+    if (savedColor) {
+      const parsedColors = JSON.parse(savedColor); // Parse the string to an array
+      setThemeColor(parsedColors);
+    }
+  }, []);
+
+    
+    const RadarCol = themeColor[0];  // Main background
+    const PrimCol = themeColor[1];      // Primary button
+    const RadarGridCol = themeColor[2];        // Text
+    const SecCol = themeColor[3];      // Borders
+    console.log("RadarCol:",RadarCol );
+    
   // Fetch characters from localStorage on mount
   useEffect(() => {
     const characters = JSON.parse(localStorage.getItem("characters") || "[]");
@@ -44,12 +62,6 @@ export default function CharacterDashboard() {
     ? Math.floor((Date.now() - storedCharacters[0].createdAt) / (1000 * 60 * 60 * 24))
     : 0;
 
-  const [quests, setQuests] = useState([
-    { label: "Defeat the Beast", completed: false },
-    { label: "Collect Resources", completed: false },
-    { label: "Training Session", completed: false },
-    { label: "Protect the Village", completed: false },
-  ]);
 
   const loadImageFromStorage = (key: string, fallback: string) => {
     return localStorage.getItem(key) || fallback;
@@ -95,14 +107,28 @@ export default function CharacterDashboard() {
     Emotional: 9,
   };
 
+  function hexToRgba(hex: string, alpha: number): string {
+    // Remove the '#' from the hex string if it exists
+    hex = hex.replace('#', '');
+  
+    // Extract the red, green, and blue components
+    const r = parseInt(hex.substring(0, 2), 16);
+    const g = parseInt(hex.substring(2, 4), 16);
+    const b = parseInt(hex.substring(4, 6), 16);
+  
+    // Return the RGBA string
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
   const chartData = {
     labels: Object.keys(skillLevels),
     datasets: [
       {
         label: "Skill Levels",
         data: Object.values(skillLevels),
-        backgroundColor: "rgba(118, 160, 244, 0.2)",
-        borderColor: "#76A0F4",
+        backgroundColor: hexToRgba(RadarCol, 0.3),
+        // "rgba(118, 160, 244, 0.2)"
+        borderColor: RadarCol,
         borderWidth: 1,
         pointRadius: 1,
       },
@@ -119,28 +145,34 @@ export default function CharacterDashboard() {
       r: {
         pointLabels: {
           display: true, // Hide category labels (Thing 1, Thing 2, etc.)
-          color: '#616D87'
+          color: RadarCol
         },
         ticks: {
           display: false, // Hide numbers on the chart
         },
         grid: {
-          color: '#616D87',
+          color: RadarGridCol,
           lineWidth: 1,
         },
         angleLines: {
-          color: '#616D87', // Change the colour of the axis lines
+          color: RadarGridCol, // Change the colour of the axis lines
           lineWidth: 1,
         },
       },
     },
   };
 
-  const handleQuestChange = (index: number) => {
-    const newQuests = [...quests];
-    newQuests[index].completed = !newQuests[index].completed;
-    setQuests(newQuests);
-  };
+
+
+   // Load daily quests from localStorage
+   useEffect(() => {
+    const savedQuests = localStorage.getItem("dailyQuests");
+    if (savedQuests) {
+      setDailyQuests(JSON.parse(savedQuests));
+    }
+  }, []);
+
+  
 
   return (
     <div>
@@ -149,7 +181,9 @@ export default function CharacterDashboard() {
         {/* Left Panel */}
         <div className="mt-10 w-full md:w-1/4 p-4">
           <Card key={index} className="p-2 bg-[#262626] border-none rounded-[5px]">
-            <h2 className="text-lg text-center font-bold font-[Metropolis] text-[#398FFF]">Character: {char.username}</h2>
+            <h2 className="text-lg text-center font-bold font-[Metropolis] text-[#398FFF]"
+             style={{ color: PrimCol }}
+            >Character: {char.username}</h2>
           </Card>
 
           <Card className="mt-3 p-1 bg-[#262626] border-none rounded-[5px]">
@@ -166,7 +200,8 @@ export default function CharacterDashboard() {
             />
             <label
               htmlFor="character-upload"
-              className="block text-center mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded cursor-pointer font-[monospace] text-[10px]"
+              className="block text-center mt-2 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded cursor-pointer font-[monospace] text-[10px]"
+              style={{ backgroundColor: PrimCol }}
             >
               Change Character Image
             </label>
@@ -184,15 +219,15 @@ export default function CharacterDashboard() {
 
           <div className="mt-4">
             <p>Physical: Lv. 10</p>
-            <Progress value={50} max={20} className="h-[5px]" />
+            <Progress value={50} max={20} PrimCol={PrimCol} SecCol={SecCol} className="h-[5px]" />
             <p>Spiritual: Lv. 12</p>
-            <Progress value={50} max={20} className="h-[5px]" />
+            <Progress value={50} max={20} PrimCol={PrimCol} SecCol={SecCol} className="h-[5px]" />
             <p>Mental: Lv. 15</p>
-            <Progress value={50} max={20} className="h-[5px]" />
+            <Progress value={50} max={20} PrimCol={PrimCol} SecCol={SecCol} className="h-[5px]" />
             <p>Social: Lv. 8</p>
-            <Progress value={50} max={20} className="h-[5px]" />
+            <Progress value={50} max={20} PrimCol={PrimCol} SecCol={SecCol} className="h-[5px]" />
             <p>Emotional: Lv. 9</p>
-            <Progress value={50} max={20} className="h-[5px]" />
+            <Progress value={50} max={20} PrimCol={PrimCol} SecCol={SecCol} className="h-[5px]" />
           </div>
         </div>
 
@@ -209,15 +244,15 @@ export default function CharacterDashboard() {
             <Card className="bg-white border-none rounded-[5px]">
               <p className="text-black">❤️ Health: 10/20</p>
             </Card>
-            <Progress value={50} max={20} className="mt-2 h-[10px]" />
+            <Progress value={50} max={20} PrimCol={PrimCol} SecCol={SecCol} className="mt-2 h-[10px]" />
             <Card className="mt-2 bg-white border-none rounded-[5px]">
               <p>⚡Energy: 10/20</p>
             </Card>
-            <Progress value={50} max={20} className="mt-2 h-[10px]" />
+            <Progress value={50} max={20} PrimCol={PrimCol} SecCol={SecCol} className="mt-2 h-[10px]" />
             <Card className="mt-2 bg-white border-none rounded-[5px]">
               <p>😊 Mood: 10/20</p>
             </Card>
-            <Progress value={50} max={20} className="mt-2 h-[10px]" />
+            <Progress value={50} max={20} PrimCol={PrimCol} SecCol={SecCol} className="mt-2 h-[10px]" />
           </div>
 
           <div className="w-full mt-auto p-1 text-[#767676] text-sm">
@@ -230,31 +265,31 @@ export default function CharacterDashboard() {
            </Link>
 
            <Link to="/daily-quests">
-           <button className="p-2 rounded-md hover:bg-gray-700">
+           <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">
              Daily Quests
            </button>
            </Link>
           
           <Link to="/quests">
-           <button  className="p-2 rounded-md hover:bg-gray-700">
+           <button  className="text-[#767676] p-2 rounded-md hover:bg-gray-700">
              Quests
            </button>
           </Link>
 
           <Link to="/skills">
-          <button className="p-2 rounded-md hover:bg-gray-700">
+          <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">
             Skills
            </button>
            </Link>
 
            <Link to="/history">
-           <button className="p-2 rounded-md  hover:bg-gray-700">
+           <button className="text-[#767676] p-2 rounded-md  hover:bg-gray-700">
              History
            </button>
           </Link>
 
            <Link to="/">
-           <button className="p-2 rounded-md text-red-500">
+           <button className=" p-2 rounded-md text-red-500">
             Exit
          </button>
            </Link>
@@ -276,34 +311,43 @@ export default function CharacterDashboard() {
           <label
             htmlFor="other-upload"
             className="block text-center mt-2 bg-blue-500 hover:bg-blue-700 text-white font-bold py-1 px-2 rounded cursor-pointer font-[monospace] text-[10px]"
+            style={{ backgroundColor: PrimCol }}
           >
             Change Image
           </label>
 
-          <Card className="mt-4 p-1 bg-[#1D282C] border-none rounded-[0px]">
-            <h2 className="text-base text-[#76A0F4] ">Daily Quests</h2>
+          
+          <Card className="mt-4 p-1 bg-[#1D282C] border rounded-md" style={{ backgroundColor: SecCol, borderColor: SecCol }}>
+            <h2 className="text-base text-[#76A0F4] "
+            style={{color: PrimCol }}
+            >Daily Quests</h2>
+          </Card>
+          
+          <div className="mt-1 h-[200px] overflow-y-auto space-y-2 p-2 border rounded-md" style={{borderColor: SecCol }} >
+          <Card className="p-0.5 mb-6 bg-transparent border-transparent">
+            {dailyQuests.length > 0 ? (
+              <ul>
+                {dailyQuests.map((quest) => (
+                  <li key={quest.id} className="text-[10px] text-white flex justify-between items-center mb-2 p-2" style={{ backgroundColor: SecCol }}>
+                    <span>{quest.name}</span>
+                    <span className={`text-[10px] px-1 py-1 rounded ${quest.completed ? "bg-green-500" : "bg-red-500"}`}>
+                      {quest.completed ? "Completed" : "Incomplete"}
+                    </span>
+                  </li>
+                ))}
+              </ul>
+            ) : (
+              <p>No daily quests available.</p>
+            )}
+          </Card>
+          </div>
+
+          <Card className="mt-4 p-2 bg-[#191919] border rounded-[0px]" style={{borderColor: SecCol}}>
+            <Link to="/quests" className="text-sm font-bold" style={{color: PrimCol }}>Go to Quest Log</Link>
           </Card>
 
-          <Card className="p-2 bg-[#191919] border-[#1D282C] rounded-[0px]">
-            {quests.map((quest, index) => (
-              <div key={index} className="flex items-center">
-                <Checkbox
-                  id={`quest-${index}`}
-                  checked={quest.completed}
-                  onCheckedChange={() => handleQuestChange(index)}
-                  className="mr-2"
-                />
-                <label htmlFor={`quest-${index}`} className="text-white">{quest.label}</label>
-              </div>
-            ))}
-          </Card>
-
-          <Card className="mt-4 p-2 bg-[#191919] border-[#1D282C] rounded-[0px]">
-            <Link to="/quests" className="text-[#76A0F4] text-sm font-bold">Go to Quest Log</Link>
-          </Card>
-
-          <Card  key={index} className="text-white mt-4 p-2 bg-[#1D282C] border-none rounded-[5px] font-[monospace]">
-            <h2 className="text-lg font-bold text-[#398FFF]">Bio</h2>
+          <Card  key={index} className="text-white mt-4 p-2 border-none rounded-[5px] font-[monospace]" style={{backgroundColor: SecCol }}>
+            <h2 className="text-lg font-bold" style={{color: PrimCol }}>Bio</h2>
             <p>Age: {char.age}</p> 
             <p>Height (cm): {char.height}</p>
             <p>Ethnicity: {char.ethnicity}</p>
