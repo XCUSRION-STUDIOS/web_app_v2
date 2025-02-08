@@ -23,6 +23,36 @@ export default function NewCharacter() {
     createdAt: Date.now()
   });
 
+  const StatInfo = {
+    level: 1,
+    xp: 0,
+    health: 75,
+    max_health: 100,
+    energy: 75,
+    max_energy: 100,
+    mood: 75,
+    max_mood: 100,
+    perks: [], // Changed to an array for better flexibility
+    currency: 0,
+    stats: {
+      physical: 1,
+      spiritual: 1,
+      mental: 1,
+      social: 1,
+      emotional: 1,
+    },
+    stats_xp: {
+      physical_xp: 0,
+      spiritual_xp: 0,
+      mental_xp: 0,
+      social_xp: 0,
+      emotional_xp: 0,
+    }
+};
+
+
+  
+
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -44,10 +74,6 @@ export default function NewCharacter() {
       return;
     }
 
-    // const newCharacter = {
-    //   ...character,
-    //   createdAt: Date.now(), // Assign timestamp at creation
-    // };
 
     const storedCharacters = JSON.parse(localStorage.getItem("characters") || "[]");
 
@@ -57,6 +83,7 @@ export default function NewCharacter() {
 
       // Save the updated characters array back to localStorage
       localStorage.setItem("characters", JSON.stringify(storedCharacters));
+      localStorage.setItem('statInfo', JSON.stringify(StatInfo));
 
       // Navigate to the Load Character page
       navigate("/load-character");
