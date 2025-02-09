@@ -509,6 +509,7 @@ export default function Quests() {
                 <th className="p-2">Type</th>
                 <th className="p-2">Difficulty</th>
                 <th className="p-2">XP Reward</th>
+                <th className="p-2">Gem Reward</th>
                 <th className="p-2">Actions</th>
               </tr>
             </thead>
@@ -518,7 +519,8 @@ export default function Quests() {
                   <td className="p-2">{quest.name}</td>
                   <td className="p-2">{quest.type}</td>
                   <td className="p-2">{quest.difficulty}</td>
-                  <td className="p-2">{quest.xp}</td>
+                  <td className="p-2">{quest.xp} ⭐</td>  
+                  <td className="p-2">{quest.currency} 💎</td>
                   <td className="p-2">
                     <button
                       onClick={() => completeQuest(quest.id)}
@@ -551,16 +553,16 @@ export default function Quests() {
             <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">Status</button>
           </Link>
           <Link to="/daily-quests">
-            <button className="p-2 rounded-md hover:bg-gray-700">Daily Quests</button>
+            <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">Daily Quests</button>
           </Link>
           <Link to="/quests">
-            <button className="p-2 rounded-md hover:bg-gray-700">Quests</button>
+            <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">Quests</button>
           </Link>
           <Link to="/skills">
-            <button className="p-2 rounded-md hover:bg-gray-700">Skills</button>
+            <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">Skills</button>
           </Link>
-          <Link to="/history">
-            <button className="p-2 rounded-md hover:bg-gray-700">History</button>
+          <Link to="/shop">
+            <button className="text-[#767676] p-2 rounded-md hover:bg-gray-700">Shop</button>
           </Link>
           <Link to="/">
             <button className="p-2 rounded-md text-red-500">Exit</button>

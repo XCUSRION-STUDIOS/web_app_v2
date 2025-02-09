@@ -1,9 +1,9 @@
 
-
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import backgroundImage from "../assets/darkimg2.png";
 import Logo from "../assets/xcursionlogo.png";
+import { loadStats, StatInfo } from "../lib/statLoader";
 
 export default function NewCharacter() {
   const navigate = useNavigate();
@@ -20,38 +20,11 @@ export default function NewCharacter() {
     mental: 1,
     social: 1,
     emotional: 1,
-    createdAt: Date.now()
+    createdAt: Date.now(),
   });
 
-  const StatInfo = {
-    level: 1,
-    xp: 0,
-    health: 75,
-    max_health: 100,
-    energy: 75,
-    max_energy: 100,
-    mood: 75,
-    max_mood: 100,
-    perks: [], // Changed to an array for better flexibility
-    currency: 0,
-    stats: {
-      physical: 1,
-      spiritual: 1,
-      mental: 1,
-      social: 1,
-      emotional: 1,
-    },
-    stats_xp: {
-      physical_xp: 0,
-      spiritual_xp: 0,
-      mental_xp: 0,
-      social_xp: 0,
-      emotional_xp: 0,
-    }
-};
-
-
-  
+  // Load or initialize the stat info from statLoader
+  const [statInfo, setStatInfo] = useState<StatInfo>(loadStats());
 
   // Handle input changes
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -74,16 +47,19 @@ export default function NewCharacter() {
       return;
     }
 
-
     const storedCharacters = JSON.parse(localStorage.getItem("characters") || "[]");
 
     // Check if a character has already been created
     if (storedCharacters.length === 0) {
+      // Add the character info with the current stats
       storedCharacters.push({ ...character, createdAt: character.createdAt || Date.now() });
 
       // Save the updated characters array back to localStorage
       localStorage.setItem("characters", JSON.stringify(storedCharacters));
-      localStorage.setItem('statInfo', JSON.stringify(StatInfo));
+
+      // Save the initial stat info (from statLoader) to LocalStorage
+      localStorage.setItem("statInfo", JSON.stringify(statInfo));
+      setStatInfo(statInfo);
 
       // Navigate to the Load Character page
       navigate("/load-character");

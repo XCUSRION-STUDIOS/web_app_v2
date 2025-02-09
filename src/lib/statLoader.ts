@@ -1,4 +1,5 @@
-export interface StatInfo {
+
+  export interface StatInfo {
     level: number;
     xp: number;
     health: number;
@@ -23,6 +24,12 @@ export interface StatInfo {
       social_xp: number;
       emotional_xp: number;
     };
+    temp_buffs_val: {
+      xp: number;
+      health: number;
+      energy: number;
+      mood: number;
+    };
   }
   
   export const loadStats = (): StatInfo => {
@@ -45,7 +52,8 @@ export interface StatInfo {
       perks: [],
       currency: 0,
       stats: { physical: 1, spiritual: 1, mental: 1, social: 1, emotional: 1 },
-      stats_xp: { physical_xp: 0, spiritual_xp: 0, mental_xp: 0, social_xp: 0, emotional_xp: 0 }
+      stats_xp: { physical_xp: 0, spiritual_xp: 0, mental_xp: 0, social_xp: 0, emotional_xp: 0 },
+      temp_buffs_val: {xp: 1, health: 1, energy: 1, mood: 1},
     };
   };
   

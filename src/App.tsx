@@ -7,7 +7,7 @@ import LoadCharacter from './pages/LoadCharacter.tsx';
 import NewCharacter from './pages/NewCharacter.tsx';
 import Settings from './pages/Settings.tsx';
 import Skills from './pages/Skills.tsx';
-import History from './pages/History.tsx';
+import Shop from './pages/Shop.tsx';
 import Quests from './pages/Quests.tsx';
 import DailyQuests from './pages/DailyQuests.tsx';
 
@@ -23,7 +23,7 @@ const App = () => {
         <Route path="/character-dashboard" element={<CharacterDashboard />} />
         <Route path="/quests" element={<Quests />} />
         <Route path="/skills" element={<Skills />} />
-        <Route path="/history" element={<History />} />
+        <Route path="/shop" element={<Shop />} />
         <Route path="/daily-quests" element={<DailyQuests />} />
       </Routes>
     </Router>

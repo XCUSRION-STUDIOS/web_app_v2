@@ -15,3 +15,77 @@ git merge [branch_name]
 git push origin main
 
 https://stackoverflow.com/questions/58065603/netlify-renders-404-on-page-refresh-using-react-and-react-router
+
+
+Final Levelling System
+1. XP Distribution & Stat Growth
+
+    Completing a quest gives Character XP + Stat XP (based on quest type).
+    Every X Stat XP = +1 to that stat.
+    Stats increase naturally based on quest activity.
+    Completing a quest also gives some currency points
+
+2. Character Leveling & Bonus Stat Points
+
+    Character Level increases with XP gain (not stat growth).
+    Every level-up grants:
+        1 or 2 Distributable Stat Points, so the player can boost a chosen stat.
+        A Perk or Passive Bonus (optional, e.g., faster energy recovery, bonus XP, etc.).
+
+3. Character attribute such as Health, Energy, and Mood level up with the character level
+
+The number of stat points of certain points will also affect these attributes
+e.g. High emotional stat will increase health
+
+    
+4. Both the character level up and stat increases get exponentially harder as the character grows
+Why 
+
+This Works:
+
+✅ Quests remain meaningful (stats grow naturally).
+✅ Players get strategic choices (stat points on level-up).
+✅ Character Level doesn’t feel slow or disconnected from stat growth.
+✅ It keeps the Solo Leveling feel (progress through action but with player agency).
+
+
+
+Get bonus content if you complete all daily Quests
+But you also take loses if you don't complete all daily quest
+
+✅ 1. Full Completion Rewards (Complete All Quests)
+
+    XP Bonus → Gain an extra XP boost (e.g., +10% XP for the day)
+    Gems Bonus → Small gem reward (in-game currency)
+    Special Buffs → Gain a temporary perk like:
+        "Motivated Start" → +5% XP gain tomorrow
+        "Refreshed Mindset" → +10% Mood for the next day
+
+❌ 2. Partial Completion Consequences (Miss Some Quests)
+
+    No extra bonuses, just the regular quest rewards.
+    Minor mood decrease (-5 Mood, symbolizing frustration).
+
+⚠️ 3. Full Failure Consequences (Complete None)
+
+    XP Penalty → Small loss of stored XP (not leveling down, just delaying progress)
+    Mood & Energy Drop → Bigger hit to Mood (-10) and Energy (-5)
+    Debuff for Next Day → "Lazy Start" → -5% XP gain tomorrow
+
+
+    TO DO:
+
+    change history page to shop and add basic design incl; currency amount in top right and maybe two vertical sroll componentts for diff types of items
+    DONE
+
+    NEXT STEPS:
+
+    push shop items info to local storage
+    for the time being you can only use the perks once, so once they are bought, they cannot be used again. This will be established using the purchased field.
+    Once an item is bought, it's saved in local storage under the invetory key.
+    When a person presses buy, the game will subtract the cost from their gems and if t number is positive the item will be sent ot the invetory. If they do not have enough money,
+    a warning will appear
+
+
+    add active temp and permanent perks in the skill column
+    implement leveling up and not going below 0 in the main page
