@@ -89,3 +89,5 @@ But you also take loses if you don't complete all daily quest
 
     add active temp and permanent perks in the skill column
     implement leveling up and not going below 0 in the main page
+    When you buy something on the shops page, the game does not remember this!
+    Also each item in the store should haave an id nuber. This way only the id number gets added to the inventory and you canm look up the invetory item detials in the item database using teh id numebr
