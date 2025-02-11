@@ -1,4 +1,3 @@
-
 import { Radar } from "react-chartjs-2";
 import "chart.js/auto";
 import { Link, useNavigate } from 'react-router-dom';
@@ -30,32 +29,91 @@ export default function CharacterDashboard() {
   const navigate = useNavigate();
   const [storedCharacters, setStoredCharacters] = useState<Character[]>([]);
   const [dailyQuests, setDailyQuests] = useState<{ id: number; name: string; completed: boolean }[]>([]);
-  const [themeColor, setThemeColor] = useState<string[]>(["#8C94B8", "#396185", "#5D5E60", "#1D282C"]);
+  const [themeColor, _] = useState<string[]>(["#8C94B8", "#396185", "#5D5E60", "#1D282C"]);
   const [statInfo, setStatInfo] = useState<StatInfo>(loadStats); // Load stats here
   console.log(setStatInfo);
 
 
-function calculateXPForLevel(level: number): number {
-  const baseXP = 100; // Starting XP for level 1
-  const growthFactor = 1.5; // How much the XP increases for each level
-  return Math.round(baseXP * Math.pow(growthFactor, level - 1));
-}
-
-function calculateStatXPForStat(statLevel: number): number {
-  const baseStatXP = 10; // Starting Stat XP required for level 1
-  const growthFactor = 1.25; // How much the XP required increases per stat point
-  return Math.round(baseStatXP * Math.pow(growthFactor, statLevel - 1));
-}
+  const levelUpCharacter = (level: number, xp: number) => {
+    let updatedLevel = level;
+    let updatedXP = xp;
+  
+    while (updatedXP >= calculateXPForLevel(updatedLevel)) {
+      updatedXP -= calculateXPForLevel(updatedLevel); // Subtract XP required for the current level
+      updatedLevel++; // Level up
+    }
+  
+    return { updatedLevel, updatedXP }; // Return both level and remaining XP
+  };
 
   useEffect(() => {
-    const savedColor = localStorage.getItem("selectedColors");
-    if (savedColor) {
-      const parsedColors = JSON.parse(savedColor); // Parse the string to an array
-      setThemeColor(parsedColors);
+    const { updatedLevel, updatedXP } = levelUpCharacter(statInfo.level, statInfo.xp);
+    if (updatedLevel !== statInfo.level || updatedXP !== statInfo.xp) {
+      setStatInfo((prev) => ({ ...prev, level: updatedLevel, xp: updatedXP }));
     }
-  }, []);
+  }, [statInfo.xp]);
 
-    
+  function calculateXPForLevel(level: number): number {
+    const baseXP = 100; // Starting XP for level 1
+    const growthFactor = 1.5; // How much the XP increases for each level
+    return Math.round(baseXP * Math.pow(growthFactor, level - 1));
+  }
+
+
+  const levelUpStat = (level: number, xp: number) => {
+    let updatedLevel = level;
+    let updatedXP = xp;
+  
+    while (updatedXP >= calculateStatXPForStat(updatedLevel)) {
+      updatedXP -= calculateStatXPForStat(updatedLevel); // Subtract XP required for the current level
+      updatedLevel++; // Level up
+    }
+  
+    return { updatedLevel, updatedXP };
+  };
+  
+  useEffect(() => {
+    setStatInfo((prev) => {
+      let updatedStats = { ...prev.stats };
+      let updatedStatsXP = { ...prev.stats_xp };
+      let hasChanges = false;
+  
+      Object.keys(prev.stats).forEach((statKey) => {
+        const stat = statKey as keyof StatInfo["stats"];
+        const { updatedLevel, updatedXP } = levelUpStat(prev.stats[stat], prev.stats_xp[`${stat}_xp`]);
+  
+        if (updatedLevel !== prev.stats[stat] || updatedXP !== prev.stats_xp[`${stat}_xp`]) {
+          updatedStats[stat] = updatedLevel; // Update stat level
+          updatedStatsXP[`${stat}_xp`] = updatedXP; // Update remaining XP
+          hasChanges = true;
+        }
+      });
+  
+      if (hasChanges) {
+        const newStatInfo = { ...prev, stats: updatedStats, stats_xp: updatedStatsXP };
+        localStorage.setItem("statInfo", JSON.stringify(newStatInfo)); // ✅ Save to local storage
+        setStatInfo(newStatInfo);
+        return newStatInfo;
+      }
+  
+      return prev;
+    });
+  }, [statInfo.stats_xp]);
+  
+
+
+
+  function calculateStatXPForStat(statLevel: number): number {
+    const baseStatXP = 100; // Starting Stat XP required for level 1
+    const growthFactor = 1.25; // How much the XP required increases per stat point
+    return Math.round(baseStatXP * Math.pow(growthFactor, statLevel - 1));
+  }
+
+  
+  
+  
+
+
     const RadarCol = themeColor[0];  // Main background
     const PrimCol = themeColor[1];      // Primary button
     const RadarGridCol = themeColor[2];        // Text
@@ -136,13 +194,15 @@ function calculateStatXPForStat(statLevel: number): number {
     // Return the RGBA string
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
+  console.log(Object.values(skillLevels));
 
   const chartData = {
     labels: Object.keys(skillLevels),
     datasets: [
       {
         label: "Skill Levels",
-        data: Object.values(skillLevels),
+        data: 
+        Object.values(skillLevels),
         backgroundColor: hexToRgba(RadarCol, 0.3),
         // "rgba(118, 160, 244, 0.2)"
         borderColor: RadarCol,
@@ -155,29 +215,34 @@ function calculateStatXPForStat(statLevel: number): number {
   const options = {
     plugins: {
       legend: {
-        display: false, // Hide the legend (key)
+        display: false,
       },
     },
     scales: {
       r: {
         pointLabels: {
-          display: true, // Hide category labels (Thing 1, Thing 2, etc.)
-          color: RadarCol
+          display: true,
+          color: RadarCol,
         },
         ticks: {
-          display: false, // Hide numbers on the chart
+          display: false,
+          beginAtZero: true,
+          stepSize: 1, // Adjust this based on your expected skill range
         },
+        suggestedMin: 0, // Ensures the chart always starts from zero
+        suggestedMax: Math.max(...Object.values(skillLevels)) + 2, // Scale dynamically
         grid: {
           color: RadarGridCol,
           lineWidth: 1,
         },
         angleLines: {
-          color: RadarGridCol, // Change the colour of the axis lines
+          color: RadarGridCol,
           lineWidth: 1,
         },
       },
     },
   };
+  
 
 
 
@@ -201,10 +266,6 @@ function calculateStatXPForStat(statLevel: number): number {
             <h2 className="text-lg text-center font-bold font-[Metropolis] text-[#398FFF]"
              style={{ color: PrimCol }}
             >Character: {char.username}</h2>
-          </Card>
-
-          <Card className="mt-3 p-1 bg-[#262626] border-none rounded-[5px]">
-            <p className="italic text-white text-center">"Only a fool trips on what is behind him"</p>
           </Card>
 
           <div className="mt-3 relative">

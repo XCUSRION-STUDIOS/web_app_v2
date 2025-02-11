@@ -111,20 +111,20 @@ export default function DailyQuests() {
       // Full Completion Rewards
       
       stats.currency += 5; // Small gem reward
-      stats.temp_buffs_val.xp = 0.05; // +5% XP gain tomorrow
-      stats.temp_buffs_val.mood = 0.10; // +10% mood tomorrow
+      stats.temp_buffs_val.xp = 1.05; // +5% XP gain tomorrow
+      stats.temp_buffs_val.mood = 1.10; // +10% mood tomorrow
       console.log("Full Completion Rewards Applied");
       setShowCompletionPopup(true);
     } else if (incompleteQuests.length === totalQuests) {
       // Full Failure Consequences
-      stats.temp_buffs_val.xp = 0.05; // -5% XP gain tomorrow
-      stats.temp_buffs_val.mood = 0.10; // -10% mood tomorrow
-      stats.temp_buffs_val.energy = 0.05; // -5% XP gain tomorrow
+      stats.temp_buffs_val.xp = 0.95; // -5% XP gain tomorrow
+      stats.temp_buffs_val.mood = 0.90; // -10% mood tomorrow
+      stats.temp_buffs_val.energy = 0.95; // -5% XP gain tomorrow
       setShowCompleteFailurePopup(true);
       console.log("Full Failure Consequences Applied");
     } else {
       // Partial Completion Consequences
-      stats.temp_buffs_val.mood = 0.10; // -10% mood tomorrow
+      stats.temp_buffs_val.mood = 0.90; // -10% mood tomorrow
       setShowPartialFailurePopup(true);
       console.log("Partial Completion Consequences Applied");
     }
