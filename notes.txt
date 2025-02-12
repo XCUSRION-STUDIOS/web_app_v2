@@ -58,7 +58,7 @@ But you also take loses if you don't complete all daily quest
     XP Bonus → Gain an extra XP boost (e.g., +10% XP for the day)
     Gems Bonus → Small gem reward (in-game currency)
     Special Buffs → Gain a temporary perk like:
-        "Motivated Start" → +5% XP gain tomorrow
+       "Motivated Start" → +5% XP gain tomorrow
         "Refreshed Mindset" → +10% Mood for the next day
 
 ❌ 2. Partial Completion Consequences (Miss Some Quests)
@@ -91,3 +91,15 @@ But you also take loses if you don't complete all daily quest
     implement leveling up and not going below 0 in the main page
     When you buy something on the shops page, the game does not remember this!
     Also each item in the store should haave an id nuber. This way only the id number gets added to the inventory and you canm look up the invetory item detials in the item database using teh id numebr
+
+
+    Implement level up perk allocation
+    implement leevl; up stat increase (hp,eg,mg)
+    improve frtont end
+    
+    
+    Main priority
+    Implement quests suing ernegy
+    Think about how you can recharge energy
+    Maybe buy potions
+    maybe recharges fully every few days

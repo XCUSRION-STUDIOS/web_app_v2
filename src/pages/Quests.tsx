@@ -384,6 +384,7 @@ export default function Quests() {
   const [statInfo, setStatInfo] = useState<StatInfo>(loadStats());
   const skillTypes = ["Physical", "Mental", "Social", "Spiritual", "Emotional"];
   const difficulties = ["Very Easy", "Easy", "Medium", "Hard", "Very Hard"];
+  // const energy_req = [10, 20, 30, 40, 50];
 
   const XP_DISTRIBUTION = 0.8;
 

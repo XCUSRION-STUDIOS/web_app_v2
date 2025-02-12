@@ -33,25 +33,42 @@ export default function CharacterDashboard() {
   const [statInfo, setStatInfo] = useState<StatInfo>(loadStats); // Load stats here
   console.log(setStatInfo);
 
-
-  const levelUpCharacter = (level: number, xp: number) => {
+  const levelUpCharacter = (level: number, xp: number, maxHealth: number, maxEnergy: number, maxMood: number ) => {
     let updatedLevel = level;
     let updatedXP = xp;
+    let updatedMaxHealth = maxHealth;
+    let updatedMaxEnergy = maxEnergy;
+    let updatedMaxMood = maxMood;
   
     while (updatedXP >= calculateXPForLevel(updatedLevel)) {
       updatedXP -= calculateXPForLevel(updatedLevel); // Subtract XP required for the current level
       updatedLevel++; // Level up
+      updatedMaxHealth = 10 * updatedLevel + 90; // Update max health
+      updatedMaxEnergy = 10 * updatedLevel + 90; // Update max health
+      updatedMaxMood = 10 * updatedLevel + 90; // Update max health
     }
   
-    return { updatedLevel, updatedXP }; // Return both level and remaining XP
+    return { updatedLevel, updatedXP, updatedMaxHealth, updatedMaxEnergy, updatedMaxMood }; // Return updated values
   };
-
+  
   useEffect(() => {
-    const { updatedLevel, updatedXP } = levelUpCharacter(statInfo.level, statInfo.xp);
-    if (updatedLevel !== statInfo.level || updatedXP !== statInfo.xp) {
-      setStatInfo((prev) => ({ ...prev, level: updatedLevel, xp: updatedXP }));
+    const { updatedLevel, updatedXP, updatedMaxHealth, updatedMaxEnergy, updatedMaxMood } = levelUpCharacter(statInfo.level, statInfo.xp, statInfo.max_health, statInfo.max_energy, statInfo.max_mood);
+  
+    if (updatedLevel !== statInfo.level || updatedXP !== statInfo.xp || updatedMaxHealth !== statInfo.max_health || updatedMaxEnergy !== statInfo.max_energy || updatedMaxMood !== statInfo.max_mood) {
+      setStatInfo((prev) => ({ 
+        ...prev, 
+        level: updatedLevel, 
+        xp: updatedXP, 
+        max_health: updatedMaxHealth, 
+        health: updatedMaxHealth, // Heal the difference
+        max_energy: updatedMaxHealth, 
+        energy: updatedMaxHealth, // Heal the difference
+        max_mood: updatedMaxHealth, 
+        mood: updatedMaxHealth // Heal the difference
+      }));
     }
   }, [statInfo.xp]);
+  
 
   function calculateXPForLevel(level: number): number {
     const baseXP = 100; // Starting XP for level 1
@@ -194,7 +211,7 @@ export default function CharacterDashboard() {
     // Return the RGBA string
     return `rgba(${r}, ${g}, ${b}, ${alpha})`;
   }
-  console.log(Object.values(skillLevels));
+  
 
   const chartData = {
     labels: Object.keys(skillLevels),
