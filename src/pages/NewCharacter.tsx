@@ -156,7 +156,7 @@ export default function NewCharacter() {
 
     // Store the new character
     const existingCharacter = loadCharacter();
-    if (existingCharacter.username !== "z246zx$") {  // Default character check
+    if (existingCharacter.username !== "") {  // Default character check
       alert("A character has already been created!");
       return;
     }

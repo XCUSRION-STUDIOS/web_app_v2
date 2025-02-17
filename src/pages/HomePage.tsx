@@ -2,38 +2,21 @@ import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import backgroundImage from '../assets/darkimg2.png';
 import Logo from '../assets/xcursionlogo.png';
-
-// const handleClearData = () => {
-//   // localStorage.removeItem("characters");
-//   localStorage.clear();
-//   alert("Character data has been cleared.");
-//   window.location.reload(); // Refresh to update state
-// };
-
-// const handleExportData = () => {
-//   const storedCharacters = localStorage.getItem("characters");
-//   if (!storedCharacters) {
-//     alert("No character data available to export.");
-//     return;
-//   }
-
-//   const blob = new Blob([storedCharacters], { type: "application/json" });
-//   const url = URL.createObjectURL(blob);
-//   const a = document.createElement("a");
-//   a.href = url;
-//   a.download = "characters.json";
-//   document.body.appendChild(a);
-//   a.click();
-//   document.body.removeChild(a);
-//   URL.revokeObjectURL(url);
-// };
+import { loadCharacter } from "../lib/charLoader"; // Assuming charLoader is in the same directory
 
 export default function HomePage() {
-  const [hasCharacters, setHasCharacters] = useState(false);
+  const [hasCharacter, setHasCharacter] = useState(false);
 
   useEffect(() => {
-    const storedCharacters = JSON.parse(localStorage.getItem("characters") || "[]");
-    setHasCharacters(storedCharacters.length > 0);
+    // Load character from localStorage using your charLoader logic
+    const existingCharacter = loadCharacter();
+    
+    // If the username is not empty, we have a character
+    if (existingCharacter.username !== "") {
+      setHasCharacter(true);
+    } else {
+      setHasCharacter(false);
+    }
   }, []);
 
   return (
@@ -66,14 +49,14 @@ export default function HomePage() {
           </button>
         </Link>
 
-        <Link to={hasCharacters ? "/load-character" : "#"}>
+        <Link to={hasCharacter ? "/load-character" : "#"}>
           <button
             className={`w-60 font-bold px-4 py-2 rounded-full transition duration-300 shadow-md ${
-              hasCharacters
+              hasCharacter
                 ? "text-white bg-white/20 backdrop-blur-[2px] hover:scale-105 active:scale-98"
                 : "bg-gray-600 text-gray-400 cursor-not-allowed"
             }`}
-            disabled={!hasCharacters}
+            disabled={!hasCharacter}
           >
             LOAD CHARACTER
           </button>
@@ -85,28 +68,6 @@ export default function HomePage() {
           </button>
         </Link>
       </div>
-
-      {/* Utility Buttons */}
-      {/* <div className="mt-5 flex flex-col items-center gap-2">
-        <button
-          onClick={handleExportData}
-          className={`w-45 px-6 py-2 text-base rounded-full transition ${
-            hasCharacters
-              ? "text-black bg-white hover:bg-gray-300"
-              : "bg-gray-600 text-gray-400 cursor-not-allowed"
-          }`}
-          disabled={!hasCharacters}
-        >
-          Export Data
-        </button>
-
-        <button
-          onClick={handleClearData}
-          className="w-45 px-6 py-2 text-base text-black bg-white rounded-full hover:bg-gray-300 transition"
-        >
-          Clear Data
-        </button>
-      </div> */}
 
       {/* Footer Section */}
       <div className="absolute bottom-4 text-white opacity-70 text-sm">
