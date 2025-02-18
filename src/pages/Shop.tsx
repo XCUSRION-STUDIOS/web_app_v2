@@ -5,18 +5,11 @@ import { useState, useEffect } from "react";
 import backgroundImage from "../assets/darkimg2.png";
 import { loadStats, StatInfo } from "../lib/statLoader";
 import { Card } from "@/components/ui/card";
+import {loadShop, storeShop, ShopItem } from "../lib/shopLoader"; // Import character loader functions
 
-// Define the ShopItem type
-interface ShopItem {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  purchased: boolean;
-}
 
 export default function Shop() {
-  const [statInfo, setStatInfo] = useState<StatInfo>(loadStats());
+  const [statInfo, setStatInfo] = useState<StatInfo>(loadStats); // Load stats here
   const [error, setError] = useState<string | null>(null);
 
   // Load inventory from local storage or initialize empty array
@@ -24,29 +17,15 @@ export default function Shop() {
     JSON.parse(localStorage.getItem("inventory") || "[]")
   );
 
-  const [itemShop, setItemShop] = useState<ShopItem[]>(() => {
-    const storedItems = localStorage.getItem("itemShop");
-    return storedItems ? JSON.parse(storedItems) : [
-      { id: 101, name: "Health Potion", description: "Restores 50% of your health.", price: 100, purchased: false },
-      { id: 102, name: "XP Boost", description: "Increases XP gain by 20% for 1 hour.", price: 250, purchased: false },
-      { id: 103, name: "Permanent Strength Boost", description: "Increases physical stats permanently by 10%.", price: 500, purchased: false },
-    ];
-  });
 
-  const [customizationShop, setCustomizationShop] = useState<ShopItem[]>(() => {
-    const storedCustomizations = localStorage.getItem("customizationShop");
-    return storedCustomizations ? JSON.parse(storedCustomizations) : [
-      { id: 201, name: "Space Theme", description: "Unlocks a space-themed visual for your dashboard.", price: 30, purchased: false },
-      { id: 202, name: "Dark Mode", description: "Switches your shop to a dark color scheme.", price: 15, purchased: false },
-      { id: 203, name: "Custom Avatar Frame", description: "Adds a unique border around your profile picture.", price: 40, purchased: false },
-    ];
-  });
+  const [itemShop, setItemShop] = useState<ShopItem[]>(loadShop())
+  
 
   useEffect(() => {
     localStorage.setItem("inventory", JSON.stringify(inventory));
   }, [inventory]);
 
-  const handlePurchase = (itemId: number, price: number, type: "item" | "customization") => {
+  const handlePurchase = (itemId: number, price: number) => {
     if (statInfo.currency < price) {
       setError("Not enough gems! 💎");
       return;
@@ -64,18 +43,12 @@ export default function Shop() {
     setInventory(updatedInventory);
     localStorage.setItem("inventory", JSON.stringify(updatedInventory));
 
-    const updateShop = (shop: ShopItem[]) => 
-      shop.map((item) => item.id === itemId ? { ...item, purchased: true } : item);
+    const updatedShop = itemShop.map((item) =>
+      item.id === itemId ? { ...item, purchased: true } : item
+    );
 
-    if (type === "item") {
-      const newItemShop = updateShop(itemShop);
-      setItemShop(newItemShop);
-      localStorage.setItem("itemShop", JSON.stringify(newItemShop));
-    } else {
-      const newCustomizationShop = updateShop(customizationShop);
-      setCustomizationShop(newCustomizationShop);
-      localStorage.setItem("customizationShop", JSON.stringify(newCustomizationShop));
-    }
+    setItemShop(updatedShop);
+    storeShop(updatedShop); // Save updated shop state
 
     setError(null);
   };
@@ -114,7 +87,7 @@ export default function Shop() {
                   <td className="py-2">{item.price}💎</td>
                   <td>
                     <button
-                      onClick={() => handlePurchase(item.id, item.price, "item")}
+                      onClick={() => handlePurchase(item.id, item.price)}
                       className={`px-3 py-1 rounded ${
                         item.purchased ? "bg-gray-500 cursor-not-allowed" : "bg-green-500 hover:bg-green-700"
                       }`}
@@ -129,40 +102,7 @@ export default function Shop() {
           </table>
         </div>
 
-        {/* Customization Shop */}
-        <div className="px-5 py-5 w-[45%] h-[60vh] overflow-y-scroll bg-white/10 backdrop-blur-[2px] rounded-lg shadow-sm">
-          <h2 className="text-xl text-center font-bold mb-4">Customization</h2>
-          <table className="w-full text-sm text-center">
-            <thead>
-              <tr className="border-b border-gray-700">
-                <th className="py-2">Name</th>
-                <th className="py-2">Description</th>
-                <th className="py-2">Price</th>
-                <th className="py-2">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {customizationShop.map((item: ShopItem, index: number) => (
-                <tr key={index} className="border-b border-gray-700">
-                  <td className="py-2">{item.name}</td>
-                  <td className="py-2">{item.description}</td>
-                  <td className="py-2">{item.price}💎</td>
-                  <td>
-                    <button
-                      onClick={() => handlePurchase(item.id, item.price, "customization")}
-                      className={`px-3 py-1 rounded ${
-                        item.purchased ? "bg-gray-500 cursor-not-allowed" : "bg-green-500 hover:bg-green-700"
-                      }`}
-                      disabled={item.purchased}
-                    >
-                      {item.purchased ? "Owned" : "BUY"}
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+       
       </div>
 
       <div className="w-full mt-auto p-1 text-[#767676] text-sm">
